@@ -1,0 +1,42 @@
+{
+  "mode": "MONITOR",
+  "visibilityCeiling": "GAME_STATE",
+  "shadowEvaluation": false,
+  "disabledRules": [],
+  "structural": {
+    "minSlot": -999,
+    "maxSlot": 4096,
+    "requireNonNegativeContainerId": true,
+    "maxFrameBytes": 32768
+  },
+  "reachTolerance": 1.5,
+  "maxContainerDistance": 8.0,
+  "strikeLimit": 20,
+  "strikeWindowTicks": 1200,
+  "kickOnStrikeLimit": true,
+  "logEvents": true,
+  "metricsFlushIntervalTicks": 6000,
+  "rates": {
+    "CONTAINER_CLICK": {
+      "capacity": 120.0,
+      "refillPerTick": 20.0
+    },
+    "CREATIVE_SLOT": {
+      "capacity": 60.0,
+      "refillPerTick": 10.0
+    },
+    "BLOCK_USE": {
+      "capacity": 30.0,
+      "refillPerTick": 4.0
+    },
+    "BLOCK_ACTION": {
+      "capacity": 60.0,
+      "refillPerTick": 8.0
+    },
+    "CUSTOM_PAYLOAD": {
+      "capacity": 100.0,
+      "refillPerTick": 10.0
+    }
+  },
+  "payloadPolicies": {}
+}

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "packetguard",
+  "version": "${version}",
+  "name": "PacketGuard",
+  "description": "Game-state-aware packet validation: rejects client packets that are structurally valid but impossible in the current game state.",
+  "authors": ["TODO: team members"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.packetguard.PacketGuardMod"]
+  },
+  "mixins": ["packetguard.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.19.0",
+    "minecraft": ">=26.3",
+    "java": ">=25",
+    "fabric-api": "*"
+  }
+}
