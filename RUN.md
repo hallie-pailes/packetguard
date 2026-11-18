@@ -36,3 +36,15 @@ java -cp "out_java;$libs" EngineSim
     - javap -public -cp $jar net.minecraft.network.protocol.game.ServerboundContainerClickPacket
     - javap -public -cp $jar net.minecraft.network.protocol.game.ServerboundUseItemOnPacket
     - javap -public -cp $jar net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket
+
+
+# Run on Test Server
+Make a server folder. For example C:\mcserver
+Go to fabricmc.net/use/server & choose Minecraft 26.3 & 0.20.1 fabric and download the server jar
+Save it in the server folder you created
+Download the fabric api from modrinth.com/mod/fabric-api for 26.3 and save it in the server folder under C:\mcserver\mods\
+Copy packetguard-0.1.0.jar from this repo into C:\mcserver\mods\
+
+- cd C:\mcserver
+- java -jar fabric-server-mc.26.3-loader.0.20.1-launcher.1.1.2.jar nogui
+- firt runs stops and asks you to agree to the EULA, so edit eula.txt and change false to true, then run command again

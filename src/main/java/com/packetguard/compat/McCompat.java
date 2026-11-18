@@ -3,9 +3,9 @@ package com.packetguard.compat;
 import com.packetguard.core.PacketInfo;
 import com.packetguard.core.PacketKind;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
 import net.minecraft.network.protocol.game.ServerboundContainerClickPacket;
-import net.minecraft.network.protocol.game.ServerboundCustomPayloadPacket;
 import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
 import net.minecraft.network.protocol.game.ServerboundSetCreativeModeSlotPacket;
 import net.minecraft.network.protocol.game.ServerboundUseItemOnPacket;
@@ -22,9 +22,9 @@ public final class McCompat {
     private McCompat() {}
 
     public static PacketInfo containerClick(ServerboundContainerClickPacket p) {
-        // VERIFY: accessor names (getContainerId / getSlotNum may be record-style in 26.3).
+        // Verified with javap on the 26.3 jar: record accessors containerId() and slotNum().
         return new PacketInfo(PacketKind.CONTAINER_CLICK,
-                p.getContainerId(), p.getSlotNum(), null, null, -1);
+                p.containerId(), p.slotNum(), null, null, -1);
     }
 
     public static PacketInfo creativeSlot(ServerboundSetCreativeModeSlotPacket p) {
@@ -33,9 +33,9 @@ public final class McCompat {
     }
 
     public static PacketInfo useItemOn(ServerboundUseItemOnPacket p) {
-        // VERIFY: getHitResult().getBlockPos() and getSequence().
-        BlockPos pos = p.getHitResult().getBlockPos();
-        return new PacketInfo(PacketKind.BLOCK_USE, -1, PacketInfo.NO_SLOT, pos, null, p.getSequence());
+        // Verified with javap on the 26.3 jar: record accessors hitResult() and sequence().
+        BlockPos pos = p.hitResult().getBlockPos();
+        return new PacketInfo(PacketKind.BLOCK_USE, -1, PacketInfo.NO_SLOT, pos, null, p.sequence());
     }
 
     /**
