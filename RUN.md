@@ -48,3 +48,16 @@ Copy packetguard-0.1.0.jar from this repo into C:\mcserver\mods\
 - cd C:\mcserver
 - java -jar fabric-server-mc.26.3-loader.0.20.1-launcher.1.1.2.jar nogui
 - firt runs stops and asks you to agree to the EULA, so edit eula.txt and change false to true, then run command again
+
+# Proxy Comparison
+- run: .\gradlew.bat genSources
+- run Get-ChildItem -Recurse -Filter *sources*.jar .\.gradle\loom-cache, "$env:USERPROFILE\.gradle\caches\fabric-loom" -ErrorAction SilentlyContinue | Select-Object FullName
+    - this is used to find the class we need
+- run this, but replace src (keep quotes) with the path from above: 
+    New-Item -ItemType Directory -Force C:\temp | Out-Null
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $src = "PASTE-THE-SOURCES-JAR-PATH-HERE"
+    $zip = [IO.Compression.ZipFile]::OpenRead($src)
+    $e = $zip.Entries | Where-Object FullName -eq 'net/minecraft/network/protocol/game/GameProtocols.java'
+    [IO.Compression.ZipFileExtensions]::ExtractToFile($e, "C:\temp\GameProtocols.java", $true)
+    $zip.Dispose()

@@ -1,0 +1,69 @@
+{
+  "name": "Minecraft 26.3 (all packet ids read from the 26.3 protocol classes; field layouts still to confirm)",
+  "verified": true,
+  "notes": [
+    "Ids verified from GameProtocols, HandshakeProtocols, LoginProtocols and ConfigurationProtocols (26.3): position in each addPacket list, counted from 0.",
+    "Still to confirm: field layouts. Run the relay in monitor mode; parse_errors must stay 0, then set verified to true.",
+    "verified=true: ids from the protocol classes; BLOCK_ACTION, BLOCK_USE, CONTAINER_CLICK layouts confirmed by a live monitor run (parse_errors 0). CREATIVE_SLOT and CUSTOM_PAYLOAD layouts not yet confirmed on live traffic.",
+    "All injected packet formats checked against the 26.3 codecs (ContainerClick, UseItemOn/BlockHitResult, PlayerAction, SetCreativeModeSlot, CustomPayload)."
+  ],
+  "serverbound": {
+    "handshake": 0,
+    "login_start": 0,
+    "login_acknowledged": 3,
+    "finish_configuration_ack": 3,
+    "play": {
+      "CONTAINER_CLICK": {
+        "id": 18,
+        "layout": [
+          "varint container_id",
+          "varint state_id",
+          "short slot"
+        ]
+      },
+      "CREATIVE_SLOT": {
+        "id": 57,
+        "layout": [
+          "short slot"
+        ]
+      },
+      "BLOCK_USE": {
+        "id": 66,
+        "layout": [
+          "varint hand",
+          "position pos",
+          "varint face"
+        ]
+      },
+      "BLOCK_ACTION": {
+        "id": 41,
+        "layout": [
+          "varint status",
+          "position pos",
+          "byte face",
+          "varint sequence"
+        ],
+        "block_statuses": [
+          0,
+          2,
+          3
+        ]
+      },
+      "CUSTOM_PAYLOAD": {
+        "id": 22,
+        "layout": [
+          "string channel"
+        ]
+      }
+    }
+  },
+  "clientbound_login": {
+    "encryption_request": 1,
+    "set_compression": 3
+  },
+  "attack_encoding": {
+    "container_click_tail_hex": "00000000",
+    "creative_item_hex": "00",
+    "block_use_world_border_flag": true
+  }
+}

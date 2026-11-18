@@ -26,7 +26,8 @@ public final class ReachRule implements Rule {
     @Override
     public Verdict check(ServerPlayer player, PacketInfo info, Ctx ctx) {
         if (info.pos() == null) return Verdict.ALLOW;
-        double limit = player.blockInteractionRange() + ctx.config().reachTolerance;
+        // Floor at 0: a negative limit would square to a positive one and let nearby blocks through.
+        double limit = Math.max(0.0, player.blockInteractionRange() + ctx.config().reachTolerance);
         Vec3 eye = player.getEyePosition();
         double d2 = eye.distanceToSqr(Vec3.atCenterOf(info.pos()));
         if (d2 > limit * limit) {

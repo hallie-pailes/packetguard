@@ -180,6 +180,43 @@ class SessionTests(unittest.TestCase):
         self.assertEqual(W.parse_layout(f.payload, 1, p.play["CUSTOM_PAYLOAD"].layout)["channel"], "a:b")
 
 
+class AttackWireFormat(unittest.TestCase):
+    """Each injected packet must parse to EXACTLY its length under the 26.3 codecs
+    (checked against the decompiled StreamCodecs), so the server cannot fail to decode it."""
+    def _payload(self, kind, **fields):
+        p = test_profile()
+        raw = A.build_packet(p, {"kind": kind, "fields": fields})
+        _, pos = W.decode_varint(raw, 0)
+        r = W.Reader(raw[pos:]); r.varint()           # packet id
+        return r, raw[pos:]
+
+    def test_container_click(self):
+        r, pl = self._payload("CONTAINER_CLICK", container_id=3, slot=7)
+        r.varint(); r.varint(); r.short()             # container id, state id, slot
+        r.byte(); r.varint(); r.varint(); self.assertFalse(r.bool_())   # button, click type, changed slots (0), carried item absent
+        self.assertEqual(r.pos, len(pl))
+
+    def test_block_use(self):
+        r, pl = self._payload("BLOCK_USE", pos=[1, 64, 2])
+        r.varint(); r.position(); r.varint()          # hand, pos, face
+        r.float32(); r.float32(); r.float32(); r.bool_(); r.bool_(); r.varint()  # click xyz, inside, world border, sequence
+        self.assertEqual(r.pos, len(pl))
+
+    def test_block_action(self):
+        r, pl = self._payload("BLOCK_ACTION", status=0, pos=[1, 64, 2])
+        r.varint(); r.position(); r.ubyte(); r.varint()   # action, pos, direction, sequence
+        self.assertEqual(r.pos, len(pl))
+
+    def test_creative_slot(self):
+        r, pl = self._payload("CREATIVE_SLOT", slot=36)
+        r.short(); self.assertEqual(r.varint(), 0)    # empty item stack (count 0)
+        self.assertEqual(r.pos, len(pl))
+
+    def test_custom_payload(self):
+        r, pl = self._payload("CUSTOM_PAYLOAD", channel="a:b", data_bytes=5)
+        self.assertEqual(r.string(), "a:b"); self.assertEqual(len(pl) - r.pos, 5)
+
+
 class EndToEnd(unittest.IsolatedAsyncioTestCase):
     async def _run(self, mode, inject=None):
         p = test_profile()

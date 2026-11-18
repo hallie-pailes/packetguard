@@ -110,7 +110,10 @@ class Session:
     """Per-connection state machine. No sockets: unit-testable with plain bytes."""
 
     def __init__(self, profile: Profile, rules: ProxyRules, mode: str, metrics: ProxyMetrics,
-                 events: EventSink, conn_id: int = 0, now_ms=lambda: int(time.time() * 1000)):
+                 events: EventSink, conn_id: int = 0, now_ms=lambda: int(time.time() * 1000),
+                 verbose: bool = False):
+        self.verbose = verbose
+        self.seen_play_ids = set()
         self.p, self.rules, self.mode, self.m, self.ev = profile, rules, mode, metrics, events
         self.conn_id, self.now_ms = conn_id, now_ms
         self.state = HANDSHAKE
@@ -143,6 +146,13 @@ class Session:
             self.m.parse_errors += 1
             return Decision("forward")
         st = self.state
+        if self.verbose:
+            if st != PLAY:
+                print(f"[conn{self.conn_id}] state={st} packet_id={pid} bytes={len(fr.payload)}", flush=True)
+            elif pid not in self.seen_play_ids:
+                self.seen_play_ids.add(pid)
+                print(f"[conn{self.conn_id}] PLAY first packet id={pid} "
+                      f"({self.p.kind_for(pid) or 'not one of ours'})", flush=True)
         if st == HANDSHAKE:
             if pid == self.p.handshake_id:
                 try:
@@ -150,8 +160,12 @@ class Session:
                     r.varint(); r.string(); r.ushort()
                     nxt = r.varint()
                     self.state = STATUS if nxt == 1 else LOGIN
+                    if self.verbose:
+                        print(f"[conn{self.conn_id}] handshake intention={nxt} -> {self.state}", flush=True)
                 except ParseError:
                     self.m.parse_errors += 1
+                    if self.verbose:
+                        print(f"[conn{self.conn_id}] handshake could not be parsed", flush=True)
             return Decision("forward")
         if st == LOGIN:
             if pid == self.p.login_start_id:
@@ -161,10 +175,14 @@ class Session:
                     pass
             elif pid == self.p.login_ack_id:
                 self.state = CONFIG
+                if self.verbose:
+                    print(f"[conn{self.conn_id}] login acknowledged -> CONFIG", flush=True)
             return Decision("forward")
         if st == CONFIG:
             if pid == self.p.config_finish_ack_id:
                 self.state = PLAY
+                if self.verbose:
+                    print(f"[conn{self.conn_id}] configuration finished -> PLAY", flush=True)
             return Decision("forward")
         if st != PLAY:
             return Decision("forward")
@@ -218,7 +236,10 @@ class Relay:
 
     async def handle(self, creader, cwriter):
         self.next_id += 1
-        sess = Session(self.profile, self.rules, self.args.mode, self.metrics, self.events, self.next_id)
+        sess = Session(self.profile, self.rules, self.args.mode, self.metrics, self.events, self.next_id,
+                       verbose=getattr(self.args, "verbose", False))
+        if sess.verbose:
+            print(f"[conn{self.next_id}] client connected", flush=True)
         try:
             sreader, swriter = await asyncio.open_connection(self.args.upstream_host, self.args.upstream_port)
         except OSError as e:
@@ -231,6 +252,8 @@ class Relay:
         if self.attacks:
             tasks.append(asyncio.create_task(self._inject(sess, swriter, done)))
         await done.wait()
+        if sess.verbose:
+            print(f"[conn{sess.conn_id}] closed in state {sess.state}", flush=True)
         for t in tasks:
             t.cancel()
         for w in (cwriter, swriter):
@@ -351,6 +374,7 @@ def main(argv=None):
     ap.add_argument("--out", default="proxy_out")
     ap.add_argument("--inject", help="attacks.json: scripted attack packets to inject after PLAY starts")
     ap.add_argument("--allow-unverified", action="store_true")
+    ap.add_argument("--verbose", action="store_true", help="print connections, state changes and new packet ids")
     args = ap.parse_args(argv)
     try:
         asyncio.run(amain(args))

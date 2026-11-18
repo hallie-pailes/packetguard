@@ -1,0 +1,141 @@
+{
+  "_comment": "First attack waits 30 s after you reach the world: open a chest and click one item in that time. A7 (creative packet in survival) and A11 (oversized payload) can make the vanilla server disconnect you in runs without a filtering proxy, so they run last. A10 (payload without menu) is removed: it needs a real mod channel.",
+  "attacks": [
+    {
+      "name": "A1_click_no_menu",
+      "class": "context",
+      "kind": "CONTAINER_CLICK",
+      "fields": {
+        "container_id": 77,
+        "slot": 5
+      },
+      "count": 5,
+      "interval_ms": 200,
+      "delay_s": 30,
+      "expected_min_visibility": "GAME_STATE"
+    },
+    {
+      "name": "A2_slot_out_of_bounds",
+      "class": "state",
+      "kind": "CONTAINER_CLICK",
+      "fields": {
+        "container_id": "snoop",
+        "slot": 200
+      },
+      "count": 5,
+      "interval_ms": 200,
+      "delay_s": 3,
+      "expected_min_visibility": "GAME_STATE"
+    },
+    {
+      "name": "A3_slot_absurd",
+      "class": "structural",
+      "kind": "CONTAINER_CLICK",
+      "fields": {
+        "container_id": 0,
+        "slot": 30000
+      },
+      "count": 5,
+      "interval_ms": 200,
+      "delay_s": 3,
+      "expected_min_visibility": "PACKET"
+    },
+    {
+      "name": "A4_negative_container",
+      "class": "structural",
+      "kind": "CONTAINER_CLICK",
+      "fields": {
+        "container_id": -5,
+        "slot": 0
+      },
+      "count": 5,
+      "interval_ms": 200,
+      "delay_s": 3,
+      "expected_min_visibility": "PACKET"
+    },
+    {
+      "name": "A5_far_block_use",
+      "class": "state",
+      "kind": "BLOCK_USE",
+      "fields": {
+        "pos": [
+          5000,
+          64,
+          5000
+        ]
+      },
+      "count": 5,
+      "interval_ms": 200,
+      "delay_s": 3,
+      "expected_min_visibility": "GAME_STATE"
+    },
+    {
+      "name": "A6_far_block_break",
+      "class": "state",
+      "kind": "BLOCK_ACTION",
+      "fields": {
+        "status": 0,
+        "pos": [
+          5000,
+          64,
+          5000
+        ]
+      },
+      "count": 5,
+      "interval_ms": 200,
+      "delay_s": 3,
+      "expected_min_visibility": "GAME_STATE"
+    },
+    {
+      "name": "A8_click_flood",
+      "class": "rate",
+      "kind": "CONTAINER_CLICK",
+      "fields": {
+        "container_id": "snoop",
+        "slot": 0
+      },
+      "count": 500,
+      "interval_ms": 0,
+      "delay_s": 3,
+      "expected_min_visibility": "CONNECTION"
+    },
+    {
+      "name": "A9_payload_flood",
+      "class": "rate",
+      "kind": "CUSTOM_PAYLOAD",
+      "fields": {
+        "channel": "packetguard:test",
+        "data_bytes": 16
+      },
+      "count": 500,
+      "interval_ms": 0,
+      "delay_s": 3,
+      "expected_min_visibility": "CONNECTION"
+    },
+    {
+      "name": "A7_creative_in_survival",
+      "class": "state",
+      "kind": "CREATIVE_SLOT",
+      "fields": {
+        "slot": 36
+      },
+      "count": 5,
+      "interval_ms": 200,
+      "delay_s": 3,
+      "expected_min_visibility": "GAME_STATE"
+    },
+    {
+      "name": "A11_oversized_payload",
+      "class": "structural",
+      "kind": "CUSTOM_PAYLOAD",
+      "fields": {
+        "channel": "packetguard:test",
+        "data_bytes": 40000
+      },
+      "count": 3,
+      "interval_ms": 200,
+      "delay_s": 3,
+      "expected_min_visibility": "PACKET"
+    }
+  ]
+}

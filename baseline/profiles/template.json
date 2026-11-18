@@ -15,18 +15,57 @@
     "login_acknowledged": 3,
     "finish_configuration_ack": 3,
     "play": {
-      "CONTAINER_CLICK": {"id": null, "layout": ["varint container_id", "varint state_id", "short slot"]},
-      "CREATIVE_SLOT":   {"id": null, "layout": ["short slot"]},
-      "BLOCK_USE":       {"id": null, "layout": ["varint hand", "position pos", "varint face"]},
-      "BLOCK_ACTION":    {"id": null, "layout": ["varint status", "position pos", "byte face", "varint sequence"],
-                          "block_statuses": [0, 1, 2]},
-      "CUSTOM_PAYLOAD":  {"id": null, "layout": ["string channel"]}
+      "CONTAINER_CLICK": {
+        "id": null,
+        "layout": [
+          "varint container_id",
+          "varint state_id",
+          "short slot"
+        ]
+      },
+      "CREATIVE_SLOT": {
+        "id": null,
+        "layout": [
+          "short slot"
+        ]
+      },
+      "BLOCK_USE": {
+        "id": null,
+        "layout": [
+          "varint hand",
+          "position pos",
+          "varint face"
+        ]
+      },
+      "BLOCK_ACTION": {
+        "id": null,
+        "layout": [
+          "varint status",
+          "position pos",
+          "byte face",
+          "varint sequence"
+        ],
+        "block_statuses": [
+          0,
+          2,
+          3
+        ]
+      },
+      "CUSTOM_PAYLOAD": {
+        "id": null,
+        "layout": [
+          "string channel"
+        ]
+      }
     }
   },
-  "clientbound_login": {"encryption_request": 1, "set_compression": 3},
+  "clientbound_login": {
+    "encryption_request": 1,
+    "set_compression": 3
+  },
   "attack_encoding": {
-    "container_click_tail_hex": "0000",
-    "creative_item_hex": null,
+    "container_click_tail_hex": "00000000",
+    "creative_item_hex": "00",
     "block_use_world_border_flag": true
   }
 }
