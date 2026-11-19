@@ -1,0 +1,3 @@
+{"attack": "A3_slot_absurd", "class": "structural", "kind": "CONTAINER_CLICK", "startMillis": 1795067859884, "endMillis": 1795067860784, "sent": 3, "reachedServer": 3, "source": "proxy"}
+{"attack": "A1_click_no_menu", "class": "context", "kind": "CONTAINER_CLICK", "startMillis": 1795067863781, "endMillis": 1795067864684, "sent": 3, "reachedServer": 3, "source": "proxy"}
+{"attack": "A5_far_block_use", "class": "state", "kind": "BLOCK_USE", "startMillis": 1795067867686, "endMillis": 1795067868583, "sent": 3, "reachedServer": 3, "source": "proxy"}

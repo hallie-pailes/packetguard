@@ -1,0 +1,16 @@
+section,key,value
+evaluated,BLOCK_ACTION,25
+evaluated,BLOCK_USE,12
+evaluated,CONTAINER_CLICK,10
+rejected,CONTAINER_CLICK,3
+rejected_by_rule,structural,3
+min_visibility_of_rejections,PACKET,3
+min_visibility_of_rejections,CONNECTION,0
+min_visibility_of_rejections,GAME_STATE,0
+latency_ns,p50,30700
+latency_ns,p99,75600
+latency_bucket_log2_ns,15,36
+latency_bucket_log2_ns,16,10
+latency_bucket_log2_ns,17,1
+proxy,parse_errors,0
+proxy,unclassified_play_packets,1980

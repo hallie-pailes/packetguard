@@ -1,0 +1,47 @@
+{
+  "_comment": "Live-demo subset: A3 (packet-level), A1 and A5 (state-level). Starts 8 s after reaching the world.",
+  "attacks": [
+    {
+      "name": "A3_slot_absurd",
+      "class": "structural",
+      "kind": "CONTAINER_CLICK",
+      "fields": {
+        "container_id": 0,
+        "slot": 30000
+      },
+      "count": 3,
+      "interval_ms": 300,
+      "delay_s": 8,
+      "expected_min_visibility": "PACKET"
+    },
+    {
+      "name": "A1_click_no_menu",
+      "class": "context",
+      "kind": "CONTAINER_CLICK",
+      "fields": {
+        "container_id": 77,
+        "slot": 5
+      },
+      "count": 3,
+      "interval_ms": 300,
+      "delay_s": 3,
+      "expected_min_visibility": "GAME_STATE"
+    },
+    {
+      "name": "A5_far_block_use",
+      "class": "state",
+      "kind": "BLOCK_USE",
+      "fields": {
+        "pos": [
+          5000,
+          64,
+          5000
+        ]
+      },
+      "count": 3,
+      "interval_ms": 300,
+      "delay_s": 3,
+      "expected_min_visibility": "GAME_STATE"
+    }
+  ]
+}
