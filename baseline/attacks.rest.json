@@ -1,0 +1,43 @@
+{
+  "_comment": "Rerun of only A9, A7, A11 (first delay 5 s).",
+  "attacks": [
+    {
+      "name": "A9_payload_flood",
+      "class": "rate",
+      "kind": "CUSTOM_PAYLOAD",
+      "fields": {
+        "channel": "minecraft:brand",
+        "data_hex": "0178"
+      },
+      "count": 500,
+      "interval_ms": 0,
+      "delay_s": 5,
+      "expected_min_visibility": "CONNECTION"
+    },
+    {
+      "name": "A7_creative_in_survival",
+      "class": "state",
+      "kind": "CREATIVE_SLOT",
+      "fields": {
+        "slot": 36
+      },
+      "count": 5,
+      "interval_ms": 200,
+      "delay_s": 5,
+      "expected_min_visibility": "GAME_STATE"
+    },
+    {
+      "name": "A11_oversized_payload",
+      "class": "structural",
+      "kind": "CUSTOM_PAYLOAD",
+      "fields": {
+        "channel": "minecraft:brand",
+        "data_bytes": 40000
+      },
+      "count": 3,
+      "interval_ms": 200,
+      "delay_s": 5,
+      "expected_min_visibility": "PACKET"
+    }
+  ]
+}

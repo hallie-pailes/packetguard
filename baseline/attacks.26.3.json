@@ -1,5 +1,5 @@
 {
-  "_comment": "First attack waits 30 s after you reach the world: open a chest and click one item in that time. A7 (creative packet in survival) and A11 (oversized payload) can make the vanilla server disconnect you in runs without a filtering proxy, so they run last. A10 (payload without menu) is removed: it needs a real mod channel.",
+  "_comment": "First attack waits 30 s after you reach the world: open a chest and click one item in that time. A7 (creative packet in survival) and A11 (oversized payload) can make the vanilla server disconnect you in runs without a filtering proxy, so they run last. A10 (payload without menu) is removed: it needs a real mod channel. A9/A11 use the built-in minecraft:brand channel because the server cannot decode unregistered channels (it disconnects before any mod sees the packet).",
   "attacks": [
     {
       "name": "A1_click_no_menu",
@@ -104,8 +104,8 @@
       "class": "rate",
       "kind": "CUSTOM_PAYLOAD",
       "fields": {
-        "channel": "packetguard:test",
-        "data_bytes": 16
+        "channel": "minecraft:brand",
+        "data_hex": "0178"
       },
       "count": 500,
       "interval_ms": 0,
@@ -129,7 +129,7 @@
       "class": "structural",
       "kind": "CUSTOM_PAYLOAD",
       "fields": {
-        "channel": "packetguard:test",
+        "channel": "minecraft:brand",
         "data_bytes": 40000
       },
       "count": 3,

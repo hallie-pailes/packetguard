@@ -159,6 +159,12 @@ class SessionTests(unittest.TestCase):
         acts = [s.client_frame(fr(p, "CONTAINER_CLICK", container_id=0, slot=30000)).action for _ in range(3)]
         self.assertEqual(acts, ["drop", "drop", "close"])
 
+    def test_injected_clicks_do_not_change_snoop_id(self):
+        p = test_profile(); s, _, _ = mk_session("filter")
+        s.client_frame(fr(p, "CONTAINER_CLICK", container_id=3, slot=0))                 # real click
+        s.client_frame(fr(p, "CONTAINER_CLICK", container_id=-5, slot=0), injected=True) # attack
+        self.assertEqual(s.last_container_id, 3)
+
     def test_metrics_flush_schema(self):
         p = test_profile(); s, m, _ = mk_session("filter")
         s.client_frame(fr(p, "CONTAINER_CLICK", container_id=0, slot=30000))

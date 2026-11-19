@@ -1,0 +1,9 @@
+{"attack": "A1_click_no_menu", "class": "context", "kind": "CONTAINER_CLICK", "startMillis": 1795053331502, "endMillis": 1795053332485, "sent": 5, "reachedServer": 5, "source": "proxy"}
+{"attack": "A2_slot_out_of_bounds", "class": "state", "kind": "CONTAINER_CLICK", "startMillis": 1795053335483, "endMillis": 1795053336483, "sent": 5, "reachedServer": 5, "source": "proxy"}
+{"attack": "A3_slot_absurd", "class": "structural", "kind": "CONTAINER_CLICK", "startMillis": 1795053339486, "endMillis": 1795053340486, "sent": 5, "reachedServer": 5, "source": "proxy"}
+{"attack": "A4_negative_container", "class": "structural", "kind": "CONTAINER_CLICK", "startMillis": 1795053343485, "endMillis": 1795053344487, "sent": 5, "reachedServer": 5, "source": "proxy"}
+{"attack": "A5_far_block_use", "class": "state", "kind": "BLOCK_USE", "startMillis": 1795053347486, "endMillis": 1795053348502, "sent": 5, "reachedServer": 5, "source": "proxy"}
+{"attack": "A6_far_block_break", "class": "state", "kind": "BLOCK_ACTION", "startMillis": 1795053351502, "endMillis": 1795053352485, "sent": 5, "reachedServer": 5, "source": "proxy"}
+{"attack": "A8_click_flood", "class": "rate", "kind": "CONTAINER_CLICK", "startMillis": 1795053355487, "endMillis": 1795053355490, "sent": 500, "reachedServer": 500, "source": "proxy"}
+{"attack": "A9_payload_flood", "class": "rate", "kind": "CUSTOM_PAYLOAD", "startMillis": 1795053358484, "endMillis": 1795053358487, "sent": 500, "reachedServer": 500, "source": "proxy"}
+{"attack": "A7_creative_in_survival", "class": "state", "kind": "CREATIVE_SLOT", "startMillis": 1795053361485, "endMillis": 1795053362485, "sent": 5, "reachedServer": 5, "source": "proxy"}

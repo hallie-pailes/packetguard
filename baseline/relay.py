@@ -201,7 +201,8 @@ class Session:
         except ParseError:
             self.m.parse_errors += 1
             return Decision("forward", kind=kind)   # fail open: a baseline that blocks on parse trouble would be unfair
-        if kind == "CONTAINER_CLICK":
+        if kind == "CONTAINER_CLICK" and not injected:
+            # only REAL client clicks define "snoop"; injected attacks must not poison it
             self.last_container_id = fields.get("container_id")
         rej = self.rules.check(self.conn, kind, fields, len(fr.payload))
         self.m.record(kind, time.perf_counter_ns() - t0, rej)

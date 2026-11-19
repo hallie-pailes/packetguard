@@ -53,7 +53,10 @@ def build_packet(profile: Profile, spec: dict, last_container_id=None) -> bytes:
         w.varint(f.get("status", 0)).position(x, y, z).byte(f.get("face", 1)).varint(f.get("sequence", 0))
     elif kind == "CUSTOM_PAYLOAD":
         w.string(f.get("channel", "packetguard:test"))
-        w.raw(b"\x00" * f.get("data_bytes", 0))
+        if f.get("data_hex") is not None:
+            w.raw(bytes.fromhex(f["data_hex"]))
+        else:
+            w.raw(b"\x00" * f.get("data_bytes", 0))
     else:
         raise ValueError(f"unknown attack kind {kind}")
     return frame(w.bytes())

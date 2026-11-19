@@ -5,4 +5,4 @@ min_visibility_of_rejections,GAME_STATE,0
 latency_ns,p50,0
 latency_ns,p99,0
 proxy,parse_errors,0
-proxy,unclassified_play_packets,979
+proxy,unclassified_play_packets,1460

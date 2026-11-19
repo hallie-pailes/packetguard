@@ -1,0 +1,18 @@
+{
+  "_comment": "A10 alone. Needs payloadPolicies for minecraft:brand with requireOpenMenu true (stand-in for a mod channel that needs an open menu). Stand still with NO menu open.",
+  "attacks": [
+    {
+      "name": "A10_payload_no_menu",
+      "class": "state",
+      "kind": "CUSTOM_PAYLOAD",
+      "fields": {
+        "channel": "minecraft:brand",
+        "data_hex": "0178"
+      },
+      "count": 5,
+      "interval_ms": 200,
+      "delay_s": 5,
+      "expected_min_visibility": "GAME_STATE"
+    }
+  ]
+}

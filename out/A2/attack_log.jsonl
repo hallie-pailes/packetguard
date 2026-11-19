@@ -1,0 +1,2 @@
+{"attack": "A9_payload_flood", "class": "rate", "kind": "CUSTOM_PAYLOAD", "startMillis": 1795052189387, "endMillis": 1795052189390, "sent": 500, "reachedServer": 500, "source": "proxy"}
+{"attack": "A7_creative_in_survival", "class": "state", "kind": "CREATIVE_SLOT", "startMillis": 1795052194386, "endMillis": 1795052195367, "sent": 5, "reachedServer": 5, "source": "proxy"}
