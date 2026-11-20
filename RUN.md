@@ -61,3 +61,104 @@ Copy packetguard-0.1.0.jar from this repo into C:\mcserver\mods\
     $e = $zip.Entries | Where-Object FullName -eq 'net/minecraft/network/protocol/game/GameProtocols.java'
     [IO.Compression.ZipFileExtensions]::ExtractToFile($e, "C:\temp\GameProtocols.java", $true)
     $zip.Dispose()
+
+# For Demo:
+To clear old output:
+cd C:\Users\hal60\PacketGuard\packetguard
+Remove-Item C:\mcserver\config\packetguard\events.jsonl -ErrorAction SilentlyContinue
+Remove-Item -Recurse out\demo1, out\demo2 -ErrorAction SilentlyContinue
+
+- Make sure mode is set to MONITOR
+
+Start the relay in one terminal:
+python -m baseline.relay --mode filter --profile baseline\profiles\26.3.json --config C:\mcserver\config\packetguard\config.json --upstream-port 25565 --listen-port 25566 --out out\demo1 --inject baseline\attacks.demo.json
+- In Minecraft, join 127.0.0.1:25566 and stay in the world. The first attack fires 8 seconds after you enter, and all three finish in about 15 seconds. Wait about 20 seconds.
+- Press Ctrl-C to stop the relay. The out\demo1 folder now contains the attack log and the proxy event log.
+
+python tools\analyze.py attacks --attack-log out\demo1\attack_log.jsonl --proxy-events out\demo1\events.jsonl --mod-events C:\mcserver\config\packetguard\events.jsonl
+
+- Set Mode to ENFORCE
+- Move old events out of the way:
+Move-Item C:\mcserver\config\packetguard\events.jsonl C:\mcserver\config\packetguard\events_run1.jsonl
+
+- Start the relay in passthrough mode, so only the mod is defending:
+python -m baseline.relay --mode passthrough --profile baseline\profiles\26.3.json --config C:\mcserver\config\packetguard\config.json --upstream-port 25565 --listen-port 25566 --out out\demo2 --inject baseline\attacks.demo.json
+
+- Join 127.0.0.1:25566 again. In the first 8 seconds, open a chest and move an item, so you show that normal play still works. Then wait about 20 seconds
+- Press Ctrl+C and run:
+python tools\analyze.py attacks --attack-log out\demo2\attack_log.jsonl --mod-events C:\mcserver\config\packetguard\events.jsonl
+
+
+# For Overall Test Suite:
+- Run server, whitelist off
+
+## Run A/M
+- set "kickOnStrikeLimit": true (? - check this)
+- Mod config (C:\mcserver\config\packetguard\config.json): set "mode": "MONITOR", "shadowEvaluation": true, "visibilityCeiling": "GAME_STATE", "reachTolerance": 1.5, and save.
+- Run relay:
+python -m baseline.relay --mode passthrough --verbose --profile baseline\profiles\26.3.json --config C:\mcserver\config\packetguard\config.json --upstream-port 25565 --listen-port 25566 --inject baseline\attacks.rest.json --out out\A
+- Join 127.0.0.1:25566 in survival. In the first 25 seconds, open a chest, click one item, then close it and stand still. Stay connected 90+ seconds.
+- Press Ctrl+C on the relay after it has been quiet 20 seconds.
+- Run to analyze: 
+python tools\analyze.py attacks --attack-log out\A\attack_log.jsonl --mod-events C:\mcserver\config\packetguard\events.jsonl --proxy-events out\A\events.jsonl
+
+## To run A10:
+- Add the policy. In the mod’s config.json, set payloadPolicies to:
+"payloadPolicies": {
+  "minecraft:brand": { "requireOpenMenu": true }
+}
+- Keep "mode": "MONITOR" and "shadowEvaluation": true.
+- Run relay:
+python -m baseline.relay --mode passthrough --verbose --profile baseline\profiles\26.3.json --config C:\mcserver\config\packetguard\config.json --upstream-port 25565 --listen-port 25566 --inject baseline\attacks.a10.json --out out\A10
+- Join 127.0.0.1:25566 in survival and stand still with no menu open (no chest, no inventory). Wait about 20 seconds, then Ctrl+C.
+- Run to analyze:
+python tools\analyze.py attacks --attack-log out\A10\attack_log.jsonl --mod-events C:\mcserver\config\packetguard\events.jsonl --proxy-events out\A10\events.jsonl
+
+## Run B
+- set "kickOnStrikeLimit": false
+- Mod config: "mode": "MONITOR", "shadowEvaluation": true, "visibilityCeiling": "GAME_STATE", "kickOnStrikeLimit": false, and "payloadPolicies": {}.
+- Run relay:
+python -m baseline.relay --mode filter --verbose --profile baseline\profiles\26.3.json --config C:\mcserver\config\packetguard\config.json --upstream-port 25565 --listen-port 25566 --inject baseline\attacks.26.3.json --out out\B
+- Join 127.0.0.1:25566 in survival. Open a chest and click one item in the first 25 seconds, then stand still. Stay connected 90+ seconds.
+- Run to analyze:
+python tools\analyze.py attacks --attack-log out\B\attack_log.jsonl --mod-events C:\mcserver\config\packetguard\events.jsonl --proxy-events out\B\events.jsonl
+
+## Run C
+- set "kickOnStrikeLimit": false
+- mod "mode": "ENFORCE"
+- Run relay:
+python -m baseline.relay --mode passthrough --verbose --profile baseline\profiles\26.3.json --config C:\mcserver\config\packetguard\config.json --upstream-port 25565 --listen-port 25566 --inject baseline\attacks.26.3.json --out out\C
+- Join 127.0.0.1:25566 in survival. Open a chest and click one item in the first 25 seconds, then stand still. Stay connected 90+ seconds.
+- Run to analyze:
+python tools\analyze.py attacks --attack-log out\C\attack_log.jsonl --mod-events C:\mcserver\config\packetguard\events.jsonl --proxy-events out\C\events.jsonl
+
+## Run C-PACKET
+- ENFORCE with "visibilityCeiling": "PACKET"
+- Run relay:
+python -m baseline.relay --mode passthrough --verbose --profile baseline\profiles\26.3.json --config C:\mcserver\config\packetguard\config.json --upstream-port 25565 --listen-port 25566 --inject baseline\attacks.26.3.json --out out\CP
+- Join 127.0.0.1:25566 in survival. Open a chest and click one item in the first 25 seconds, then stand still. Stay connected 90+ seconds.
+- Run to analyze:
+python tools\analyze.py attacks --attack-log out\CP\attack_log.jsonl --mod-events C:\mcserver\config\packetguard\events.jsonl --proxy-events out\CP\events.jsonl
+
+## Run C-CONNECTION
+- ENFORCE with "visibilityCeiling": "CONNECTION"
+- Run relay:
+python -m baseline.relay --mode passthrough --verbose --profile baseline\profiles\26.3.json --config C:\mcserver\config\packetguard\config.json --upstream-port 25565 --listen-port 25566 --inject baseline\attacks.26.3.json --out out\CC
+- Join 127.0.0.1:25566 in survival. Open a chest and click one item in the first 25 seconds, then stand still. Stay connected 90+ seconds.
+- Run to analyze:
+python tools\analyze.py attacks --attack-log out\CC\attack_log.jsonl --mod-events C:\mcserver\config\packetguard\events.jsonl --proxy-events out\CC\events.jsonl
+
+## To test false positives & speed:
+- Reset the files so the numbers are only from normal play. Stop the server (stop). Then back up the old files:
+New-Item -ItemType Directory -Force C:\mcserver\backup_attack_runs | Out-Null
+Move-Item C:\mcserver\config\packetguard\events.jsonl, C:\mcserver\config\packetguard\metrics.csv C:\mcserver\backup_attack_runs\ -Force
+- Mod config: "mode": "MONITOR", "shadowEvaluation": true, "visibilityCeiling": "GAME_STATE", "reachTolerance": 1.5, "kickOnStrikeLimit": true, "payloadPolicies": {}. Start the server.
+- Start the relay in monitor mode (no --inject), so you get the proxy’s numbers from the same session:
+python -m baseline.relay --mode monitor --profile baseline\profiles\26.3.json --config C:\mcserver\config\packetguard\config.json --upstream-port 25565 --listen-port 25566 --out out\benign
+- Play normally for about 15 minutes through 127.0.0.1:25566. Open a chest, click one item, close it, move around, jump, switch to creative and and take items from invetory and build then switch back to survival etc. Then Ctrl+C the relay & type stop in the server console.
+- Run to analyze:
+python tools\analyze.py benign --metrics C:\mcserver\config\packetguard\metrics.csv --label mod-normal-play
+python tools\analyze.py latency --metrics C:\mcserver\config\packetguard\metrics.csv --label mod
+python tools\analyze.py benign --metrics out\benign\metrics.csv --label proxy-normal-play
+python tools\analyze.py latency --metrics out\benign\metrics.csv --label proxy
+
