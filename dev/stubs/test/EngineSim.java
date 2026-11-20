@@ -20,6 +20,8 @@ import java.util.*;
  * Runs the RuleEngine against stub Minecraft classes. This checks the engine's own logic
  * (ceilings, shadow evaluation, phases, strikes, hot reload, metrics). It cannot check that the
  * real 26.3 API matches the stubs.
+ * 
+ * 47-check simulation of the engine against stub classes. Tests the logic only, not real Minecraft.
  */
 public class EngineSim {
     static int failures = 0, checks = 0;

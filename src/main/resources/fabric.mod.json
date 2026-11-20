@@ -4,7 +4,7 @@
   "version": "${version}",
   "name": "PacketGuard",
   "description": "Game-state-aware packet validation: rejects client packets that are structurally valid but impossible in the current game state.",
-  "authors": ["TODO: team members"],
+  "authors": [Daniel Bruni, Hallie Pailes],
   "license": "MIT",
   "environment": "*",
   "entrypoints": {

@@ -15,8 +15,7 @@ import net.minecraft.server.level.ServerPlayer;
  * THE ONLY PLACE that touches Minecraft packet accessors.
  *
  * <p>Minecraft internals change between versions (accessor names, record vs. class). If the
- * project fails to compile after a version bump, the errors should all be in this file.
- * Verify each accessor below against the decompiled 26.3 sources ({@code ./gradlew genSources}).
+ * project fails to compile after a version bump, the errors should all be in this file.).
  */
 public final class McCompat {
     private McCompat() {}

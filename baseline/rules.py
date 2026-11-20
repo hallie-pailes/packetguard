@@ -1,4 +1,4 @@
-"""The rules a network proxy can implement, using the SAME thresholds as the mod.
+"""The rules a network proxy can implement, using the SAME thresholds as the mod from the config.json file.
 
 Visibility levels mirror the mod's ``Visibility`` enum:
   PACKET      decidable from this packet's bytes   -> frame_size, structural

@@ -1,3 +1,5 @@
+/* Hooks custom payloads (priority 500, runs early). */
+/* Two phases. The name is historical: it targets the game listener, not the common one. */
 package com.packetguard.mixin;
 
 import com.packetguard.PacketGuard;

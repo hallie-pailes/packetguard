@@ -1,3 +1,4 @@
+/* Runs the rules, applies the mode, logs, counts strikes, reloads config. */
 package com.packetguard.core;
 
 import com.packetguard.config.GuardConfig;

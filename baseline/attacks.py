@@ -1,4 +1,4 @@
-"""Attack packet builders for the evaluation (used by the relay's --inject mode and by tests).
+"""Attack packet builders for the evaluation (used by the relay's --inject mode and by tests). Builds the attack packets from attack JSON files. Layout is from Minecraft 26.3 profile.
 
 An attack spec (see attacks.example.json) is a dict:
   name, class        label used in the attack log

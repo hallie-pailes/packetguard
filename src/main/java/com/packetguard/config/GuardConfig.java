@@ -1,3 +1,4 @@
+/*  The settings, loaded from config.json with Gson. */
 package com.packetguard.config;
 
 import com.google.gson.Gson;

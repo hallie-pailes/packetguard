@@ -14,6 +14,7 @@ import net.minecraft.server.level.ServerPlayer;
  * mostly adds logging and a uniform, measurable decision. It is a <em>soft</em> rejection (no
  * strike) because a click can legitimately arrive just after the server closed or replaced a menu.
  */
+/*The click's menu id must equal the id of the menu the player has open. A mismatch is a soft reject (no strike).*/
 public final class ContainerContextRule implements Rule {
     @Override public String id() { return "container_context"; }
 

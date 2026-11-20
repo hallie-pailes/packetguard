@@ -1,4 +1,5 @@
-"""Tests for the baseline. Uses a TEST profile with made-up ids (never a real game version)."""
+"""Tests for the baseline. Uses a TEST profile with made-up ids (never a real game version). 28 tests: wire format, rules, session logic, end to end.
+Run with python -m unittest."""
 import asyncio, json, os, sys, tempfile, unittest, copy
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 from baseline import mcwire as W

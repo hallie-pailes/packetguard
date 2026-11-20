@@ -29,11 +29,11 @@ from dataclasses import dataclass
 from typing import Optional
 
 from .mcwire import (Frame, FrameBuffer, ProtocolError, ParseError, Reader, frame, parse_layout,
-                     decode_varint, NeedMore, to_signed32)
+                     decode_varint, NeedMore, to_signed32) #byte-level helpers, packet parsing, varint encoding
 from .profile import Profile
 from .rules import ConnState, ProxyRules, Rejection
 
-HANDSHAKE, STATUS, LOGIN, CONFIG, PLAY = "HANDSHAKE", "STATUS", "LOGIN", "CONFIG", "PLAY"
+HANDSHAKE, STATUS, LOGIN, CONFIG, PLAY = "HANDSHAKE", "STATUS", "LOGIN", "CONFIG", "PLAY" #Session states
 
 
 class Unsupported(ProtocolError):

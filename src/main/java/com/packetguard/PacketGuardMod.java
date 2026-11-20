@@ -1,3 +1,5 @@
+/* Fabric entry point. Loads the config, builds the engine, registers events. */
+/* Checks the config file for edits every 20 ticks (1 second) and flushes metrics on a timer. */
 package com.packetguard;
 
 import com.packetguard.config.GuardConfig;
@@ -16,7 +18,6 @@ public final class PacketGuardMod implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        // VERIFY: Fabric API event class/method names for 26.3 (some were renamed in 26.1).
         Path dir = FabricLoader.getInstance().getConfigDir().resolve("packetguard");
         GuardConfig config = GuardConfig.loadOrCreate(dir.resolve("config.json"));
         RuleEngine engine = new RuleEngine(config, dir);

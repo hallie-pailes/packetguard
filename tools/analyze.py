@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Join attack logs with mod / proxy event logs and summarise detection, false positives, overhead.
+"""Join attack logs with mod / proxy event logs and summarise detection, false positives, overhead. Matches by time window, plus or minus 1.5 seconds, and by packet kind.
 
 Usage
   analyze.py attacks  --attack-log attack_log.jsonl [--mod-events events.jsonl] [--proxy-events events.jsonl]

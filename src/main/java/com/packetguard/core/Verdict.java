@@ -7,7 +7,7 @@ package com.packetguard.core;
  * @param ruleId  id of the rule that rejected it (null when allowed)
  * @param reason  human-readable explanation
  * @param strike  whether this rejection counts toward the player's strike limit.
- *                Benign races (e.g. a click arriving just after the server closed a menu)
+ *                Benign races (e.g. a click arriving just after the server closed a menu, aka: lag)
  *                are rejected without a strike to avoid punishing lag.
  */
 public record Verdict(boolean allowed, String ruleId, String reason, boolean strike) {

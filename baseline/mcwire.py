@@ -1,5 +1,7 @@
 """Minecraft Java wire-format primitives (no compression, no encryption).
 
+Byte-level helpers: VarInt, framing, block position packing, Reader and Writer. A VarInt is a variable-length integer; a position packs x, z, y into 64 bits.
+
 The baseline requires a test server with ``online-mode=false`` and
 ``network-compression-threshold=-1`` so frames are plain: <VarInt length><packet id VarInt><fields>.
 """

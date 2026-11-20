@@ -1,3 +1,5 @@
+/* Hooks four handlers: container click, creative slot, block use, player action. (State-dependent) */
+/* Only validates on the main thread, so rules read consistent state. */
 package com.packetguard.mixin;
 
 import com.packetguard.PacketGuard;
